@@ -12,7 +12,13 @@ public class MenuManagement implements OPInterface {
 	private ArrayList<PromoItem> PromoMenu;
 	private int globalIndex = 1;
 
-	public MenuManagement() throws IOException {
+	public MenuManagement(){
+		if(!read()){
+			System.out.println("Corrupted file.");
+		}
+	}
+
+	public boolean read(){
 		Path path = Paths.get("Menu.txt");
 		try (BufferedReader br = Files.newBufferedReader(path)) {
 			String line = br.readLine();
@@ -27,7 +33,7 @@ public class MenuManagement implements OPInterface {
 			}
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			return false;
 		}
 
 		path = Paths.get("Promo.txt");
@@ -55,8 +61,9 @@ public class MenuManagement implements OPInterface {
 			}
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			return false;
 		}
+		return true;
 	}
 
 	public boolean add() throws IOException {

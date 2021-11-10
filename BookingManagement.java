@@ -6,10 +6,12 @@ import java.text.SimpleDateFormat;
 import java.text.DateFormat;
 import java.text.ParseException;
 
-import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.FileWriter;
 
 public class BookingManagement implements OPInterface {
 	private Scanner sc = new Scanner(System.in);
@@ -20,6 +22,12 @@ public class BookingManagement implements OPInterface {
 	public BookingManagement(ArrayList<Table> TableList){
 		this.ReservationList = new ArrayList<Reservation>();
 		this.TableList = TableList;
+		if(!read()){
+			System.out.println("File corrupted.");
+		}
+	}
+
+	public boolean read(){
 		Path path = Paths.get("Reservation.txt");
 		try (BufferedReader br = Files.newBufferedReader(path)) {
 			String line = br.readLine();
@@ -38,10 +46,11 @@ public class BookingManagement implements OPInterface {
 				line = br.readLine();
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			return false;
 		}
-	}
 
+		return true;
+	}
 	public void displayInterface(){
 		int user_choice = 0;
 		int reservation_no;

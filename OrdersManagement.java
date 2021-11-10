@@ -25,9 +25,13 @@ public class OrdersManagement implements OPInterface {
 		TableList = tables;
 		StaffMgr = staffMgr;
 		MenuMgr = menuMgr;
+		if(!read()){
+			System.out.println("Corrupted file.");
+		}
+	}
 
+	public boolean read(){
 		Path path = Paths.get("Order.txt");
-
 		try (BufferedReader br = Files.newBufferedReader(path)) {
 			String line = br.readLine();
 
@@ -49,9 +53,11 @@ public class OrdersManagement implements OPInterface {
 		}
 		catch(IOException e){
 			System.out.println("Invalid File.");
+			return false;
 		}
-	}
 
+		return true;
+	}
 	public boolean add() throws IOException{
 		boolean membership;
 		Date date;

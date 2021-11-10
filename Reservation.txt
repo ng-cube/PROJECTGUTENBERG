@@ -1,4 +1,3 @@
-Reservation_ID, name, contact, pax, tableID, Date, startTime
 0, John Doe, 92348543, 3, 4, 30/11/2021, 15,
 1, Kong Ming, 93233345, 5, 6, 12/12/2021, 21,
 2, Lim King, 87777777, 10, 9, 06/12/2021, 12,

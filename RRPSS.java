@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.text.ParseException;
 
 public class RRPSS {
-	MenuManagement menu = new MenuManagement();
-	ArrayList<Table> TableList;
-	BookingManagement booking = new BookingManagement(TableList);
-	StaffManagement staff = new StaffManagement();
-	OrdersManagement order = new OrdersManagement(menu, staff, TableList);
+	static protected MenuManagement menu = new MenuManagement();
+	static protected ArrayList<Table> TableList;
+	static protected BookingManagement booking = new BookingManagement(TableList);
+	static protected StaffManagement staff = new StaffManagement();
+	static protected OrdersManagement order = new OrdersManagement(menu, staff, TableList);
 
 	public static void main(String[] args) throws ParseException, IOException {
 
@@ -17,7 +17,6 @@ public class RRPSS {
 
 		while (true)
 		{
-			System.out.printf("%nWelcome to the RRPSS main interface, it is currently %s; please select an option:%n", RRPSS._ts_to_date_string(RRPSS.current_timestamp));
 			System.out.println("\t(1) - Access the Menu interface");
 			System.out.println("\t(2) - Access the Order interface");
 			System.out.println("\t(3) - Access the Booking interface");
@@ -47,6 +46,8 @@ public class RRPSS {
 					break;
 					
 				case 5:
+					System.out.println("Thank you for using the system!");
+					sc.close();
 					return;
 					
 				default:
@@ -54,8 +55,5 @@ public class RRPSS {
 					break;
 			}
 		}
-
-		System.out.println("Thank you for using the system!");
 	}
-
 }

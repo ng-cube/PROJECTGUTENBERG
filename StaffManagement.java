@@ -9,10 +9,15 @@ import java.util.Scanner;
 
 public class StaffManagement implements OPInterface {
 	private Scanner sc = new Scanner(System.in);
-	private ArrayList<Staff> StaffList = new ArrayList<>();
+	private ArrayList<Staff> StaffList = new ArrayList<Staff>();
 
-	public StaffManagement() throws IOException {
+	public StaffManagement(){
+		if(!read()){
+			System.out.println("Corrupted file.");
+		}
+	}
 
+	public boolean read(){
 		Path path = Paths.get("Staff.txt");
 
 		try (BufferedReader br = Files.newBufferedReader(path)) {
@@ -25,7 +30,11 @@ public class StaffManagement implements OPInterface {
 
 				line = br.readLine();
 			}
+		}catch(IOException e){
+			return false;
 		}
+
+		return true;
 	}
 
 	public boolean add() throws IOException {
