@@ -86,7 +86,7 @@ public class MenuManagement implements OPInterface {
 
 		// sort the items by their enum so that they are in the correct order when being printed
 		this.sort();
-		writeToCsv();
+		write();
 		return true;
 	}
 
@@ -113,7 +113,7 @@ public class MenuManagement implements OPInterface {
 		}
 
 		// also removes it from file (just override with the current list)
-		writeToCsv();
+		write();
 		return changed;
 	}
 
@@ -170,7 +170,7 @@ public class MenuManagement implements OPInterface {
 				System.out.println("Invalid input!");
 				break;
 		}
-		writeToCsv();
+		write();
 		return changed;
 	}
 
@@ -229,7 +229,7 @@ public class MenuManagement implements OPInterface {
 		int num = sc.nextInt();
 		ArrayList<Integer> arr = PromoMenu.get(id).additem(num);
 		PromoMenu.get(id).setItemIDs(arr);
-		writeToCsv();
+		write();
 		return true;
 	}
 
@@ -241,7 +241,7 @@ public class MenuManagement implements OPInterface {
 		int num = sc.nextInt();
 		ArrayList<Integer> arr = PromoMenu.get(id).removeitem(num);
 		PromoMenu.get(id).setItemIDs(arr);
-		writeToCsv();
+		write();
 		return true;
 	}
 
@@ -331,7 +331,7 @@ public class MenuManagement implements OPInterface {
 		}
 	}
 
-	public void writeToCsv() throws IOException {
+	public void write() throws IOException {
 		Path path = Paths.get("Menu.txt");
 		Path path1 = Paths.get("Promo.txt");
 		FileWriter fw = new FileWriter(String.valueOf(path));

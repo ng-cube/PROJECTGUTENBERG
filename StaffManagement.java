@@ -40,7 +40,7 @@ public class StaffManagement implements OPInterface {
 		Staff staff = new Staff(index, name, jobTitle, gender);
 		StaffList.add(staff);
 
-		writeToCsv();
+		write();
 
 		return true;
 	}
@@ -51,7 +51,7 @@ public class StaffManagement implements OPInterface {
 	 */
 	public boolean remove(int id) throws IOException {
 		StaffList.remove(id);
-		writeToCsv();
+		write();
 
 		return true;
 	}
@@ -95,7 +95,7 @@ public class StaffManagement implements OPInterface {
 				System.out.println("Invalid input!");
 				break;
 		}
-		writeToCsv();
+		write();
 		return changed;
 	}
 
@@ -137,7 +137,13 @@ public class StaffManagement implements OPInterface {
 			{
 				case 1:
 					// ADD a new staff
-					boolean added = add();
+					boolean added =false;
+					try{
+						added = add();
+					}catch(IOException e){
+						System.out.println("File corrupted.");
+					}
+
 					if(!added){
 						System.out.println("The new staff was not added. Please refer to error message above.");
 					}
@@ -154,7 +160,12 @@ public class StaffManagement implements OPInterface {
 						System.out.println("The ID you've entered is invalid.");
 						break;
 					}
-					boolean edited = edit(staff_id);
+					boolean edited =false;
+					try{
+						edited = edit(staff_id);
+					}catch(IOException e){
+						System.out.println("File corrupted.");
+					}
 
 					if(edited){
 						System.out.println("The operation was successful.");
@@ -171,9 +182,14 @@ public class StaffManagement implements OPInterface {
 						System.out.println("The ID you've entered is invalid.");
 						break;
 					}
-					boolean deleted = remove(staff_id);
+					boolean removed = false;
+					try{
+						removed = remove(staff_id);
+					}catch(IOException e){
+						System.out.println("File corrupted.");
+					}
 
-					if(deleted){
+					if(removed){
 						System.out.println("A staff was removed from the system successfully.");
 					}else{
 						System.out.println("The staff was not removed. Please refer to error message above.");
@@ -192,7 +208,7 @@ public class StaffManagement implements OPInterface {
 		}
 	}
 
-	public void writeToCsv() throws IOException {
+	public void write() throws IOException {
 		Path path = Paths.get("Staff.txt");
 		FileWriter fw = new FileWriter(String.valueOf(path));
 

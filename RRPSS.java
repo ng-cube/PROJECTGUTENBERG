@@ -1,19 +1,17 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.IOException;
+import java.text.ParseException;
 
 public class RRPSS {
+	MenuManagement menu = new MenuManagement();
+	ArrayList<Table> TableList;
+	BookingManagement booking = new BookingManagement(TableList);
+	StaffManagement staff = new StaffManagement();
+	OrdersManagement order = new OrdersManagement(menu, staff, TableList);
 
-	static protected MenuManagement menu = new MenuManagement();
-	static protected BookingManagement booking = new BookingManagement();
-	static protected StaffManagement staff = new StaffManagement();
-	static protected ArrayList<Table> TableList;
-	static protected OrdersManagement order = new OrdersManagement(menu, staff, TableList);
-	
-	/**
-	 * 
-	 * @param args
-	 */
 	public static void main(String[] args) throws ParseException, IOException {
+
 		Scanner sc = new Scanner(System.in);
 		int user_choice = 0;
 

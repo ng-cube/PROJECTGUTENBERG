@@ -16,6 +16,7 @@ public class BookingManagement implements OPInterface {
 	private ArrayList<Reservation> ReservationList;
 	private ArrayList<Table> TableList;
 	//constructor
+	
 	public BookingManagement(ArrayList<Table> TableList){
 		this.ReservationList = new ArrayList<Reservation>();
 		this.TableList = TableList;

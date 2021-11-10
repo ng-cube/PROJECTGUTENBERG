@@ -52,7 +52,7 @@ public class OrdersManagement implements OPInterface {
 		}
 	}
 
-	public boolean add() {
+	public boolean add() throws IOException{
 		boolean membership;
 		Date date;
 		System.out.println("Please enter your staff ID:");
@@ -99,14 +99,16 @@ public class OrdersManagement implements OPInterface {
 
 		Order order = new Order(OrderList.size(), staffID, tableID, date, hour, membership, false);
 		order.addItems(MenuMgr);
+		write();
 		return true;
 	}
 
-	public boolean remove(int id) {
+	public boolean remove(int id) throws IOException{
 		System.out.println("Please enter the ID of the order you would like to remove: ");
 		int order_no = sc.nextInt();
 		try{
 			OrderList.remove(order_no);
+			write();
 			return true;
 		}
 		catch(IndexOutOfBoundsException ie){
@@ -114,7 +116,7 @@ public class OrdersManagement implements OPInterface {
 		}
 	}
 
-	public boolean edit(int id) {
+	public boolean edit(int id) throws IOException {
 		Order order = get(id);
 		System.out.println("Add/remove items from this order:");
 		System.out.println("\t(1) - Add items to order");
@@ -133,6 +135,7 @@ public class OrdersManagement implements OPInterface {
 			return false;
 		}
 		
+		write();
 		return success;	
 	}
 
@@ -143,7 +146,7 @@ public class OrdersManagement implements OPInterface {
 	}
 
 	public void write() throws IOException {
-		Path path = Paths.get("Current_Orders.csv");
+		Path path = Paths.get("Orders.txt");
 		FileWriter fw = new FileWriter(String.valueOf(path));
 
 		for(Order order:OrderList) {
@@ -202,27 +205,24 @@ public class OrdersManagement implements OPInterface {
 
         	System.out.println("\n" + new String(new char[87]).replace("\0", "-"));
 
-        	System.out.printf("%87s%n", "Subtotal: " +
-                new DecimalFormat("$###,##0.00").format(total_cost));
+        	System.out.printf("%87s%n", "Subtotal: " +  new DecimalFormat("$###,##0.00").format(total_cost));
 
         	System.out.printf("%n%87s%n", "+10% Service Charge");
         	System.out.printf("%87s%n", "+7% Goods & Service Tax");
-		total_cost *= 1.17;
+			total_cost *= 1.17;
 
         	if(order.getMembership()) {
             	System.out.printf("%87s%n", "-10% membership discount");
-			total_cost *= 0.9;
+				total_cost *= 0.9;
         	}
 
-        	System.out.printf("%n%87s%n", "Total Payable: " +
-                new DecimalFormat("$###,##0.00").format(total_cost));
+        	System.out.printf("%n%87s%n", "Total Payable: " + new DecimalFormat("$###,##0.00").format(total_cost));
 
         	System.out.println(new String(new char[87]).replace("\0", "-") + "\n");
 
         	System.out.print(new String(new char[28]).replace("\0", "*"));
         	System.out.print(" Thank you for dining with us! ");
         	System.out.println(new String(new char[28]).replace("\0", "*"));
-		OrderList.get(id).setPaid(true);
     	}
 
 	public void printReport(Date startDate, Date endDate) {
@@ -256,11 +256,11 @@ public class OrdersManagement implements OPInterface {
 		System.out.println(new String(new char[87]).replace("\0", "-"));
 	}
 	
-	private static int _convert_times_to_ts(Date parsedDate) {
+	private int _convert_times_to_ts(Date parsedDate) {
 		return (int) Math.floorDiv(parsedDate.getTime(), 1000);
 	}
 
-	private static Date _convert_string_to_date(String date) throws ParseException {
+	private Date _convert_string_to_date(String date) throws ParseException {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");//("yyyy-MM-dd hh:mm:ss.SSS");
 		return dateFormat.parse(date);
 	}
@@ -272,19 +272,26 @@ public class OrdersManagement implements OPInterface {
 		{
 			System.out.println("Welcome to the order interface, please select an option:");
 			System.out.println("\t(1) - CREATE a new order");
-			System.out.println("\t(2) - VIEW all orders");
-			System.out.println("\t(3) - EDIT an order");
-			System.out.println("\t(4) - Check an order");			
-			System.out.println("\t(5) - Print an invoice");
-			System.out.println("\t(6) - Print a report");
-			System.out.println("\t(7) - Exit");
+			System.out.println("\t(2) - Remove an order");
+			System.out.println("\t(3) - VIEW all orders");
+			System.out.println("\t(4) - EDIT an order");
+			System.out.println("\t(5) - Check an order");			
+			System.out.println("\t(6) - Print an invoice");
+			System.out.println("\t(7) - Print a report");
+			System.out.println("\t(8) - Exit");
 			user_choice = sc.nextInt();
 			
 			switch (user_choice)
 			{
 				case 1:
 					// CREATE a new order
-					boolean added = add();
+					boolean added = false;
+					try{
+						added = add();
+					}catch(IOException e){
+						System.out.println("Cannot write to file.");
+					}
+
 					if(!added){
 						System.out.println("The order was not created. Please refer to error message above.");
 					}
@@ -294,11 +301,30 @@ public class OrdersManagement implements OPInterface {
 					break;
 					
 				case 2:
+					System.out.println("Please enter the ID of the order you would like to remove:");
+					order_no = sc.nextInt();
+
+					boolean removed = false;
+					try{
+						removed = remove(order_no);
+					}catch(IOException e){
+						System.out.println("Cannot write to file");
+					}
+
+					if(!removed){
+						System.out.println("The order was not removed. Please refer to error message above.");
+					}
+					else{
+						System.out.println("Order removed successfully.");
+					}
+					break;
+
+				case 3:
 					// VIEW a current order
 					display();
 					break;
 					
-				case 3:
+				case 4:
 					// Edit an order
 					System.out.println("Please enter the ID of the order you would like to modify:");
 					order_no = sc.nextInt();
@@ -306,8 +332,14 @@ public class OrdersManagement implements OPInterface {
 						System.out.println("Invalid ID. Please try again.");
 						break;
 					}
-					boolean edited = edit(order_no);
-					
+
+					boolean edited = false;
+					try{
+						edited = edit(order_no);
+					}catch(IOException e){
+						System.out.println("Cannot write to file.");
+					}
+
 					if(edited){
 						System.out.println("The operation was successful.");
 					}else{
@@ -316,7 +348,7 @@ public class OrdersManagement implements OPInterface {
 
 					break;
 					
-				case 4:
+				case 5:
 					System.out.println("Please enter the ID of the order you would like to check:");
 					order_no = sc.nextInt();
 					if(invalid(order_no)){
@@ -328,7 +360,7 @@ public class OrdersManagement implements OPInterface {
 
 					break;
 
-				case 5:
+				case 6:
 					// Generate the invoice
 					System.out.println("Please enter the ID of the order the invoice is for:");
 					order_no = sc.nextInt();
@@ -339,7 +371,7 @@ public class OrdersManagement implements OPInterface {
 					printInvoice(order_no);
 					break;
 					
-				case 6:
+				case 7:
 					System.out.println("Please enter the starting date (yyyy-MM-dd) for this report: ");
 					String start = sc.nextLine(); //yyyy-MM-dd
 					Date start_date = _convert_string_to_date(start);
@@ -349,6 +381,9 @@ public class OrdersManagement implements OPInterface {
 					printReport(start_date, end_date);
 					break;
 					
+				case 8:
+					return;
+
 				default:
 					System.out.println("Invalid input, please select one of the options above.");
 					break;

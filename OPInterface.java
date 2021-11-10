@@ -1,14 +1,14 @@
 import java.io.IOException;
 
-public interface OPInterface{
+public interface OPInterface {
 
-	boolean add() throws IOException ;
+	boolean add() throws IOException;
 
 	/**
 	 * 
 	 * @param id
 	 */
-	boolean remove(int id) throws IOException ;
+	boolean remove(int id) throws IOException;
 
 	/**
 	 * 
@@ -18,7 +18,7 @@ public interface OPInterface{
 
 	void display();
 
-	void write() throws IOException ;
+	void write() throws IOException;
 
 	void sort();
 
