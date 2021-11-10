@@ -335,7 +335,7 @@ public class MenuManagement implements OPInterface {
 		Path path = Paths.get("Menu.txt");
 		Path path1 = Paths.get("Promo.txt");
 		FileWriter fw = new FileWriter(String.valueOf(path));
-		FileWriter fw1 = new FileWriter(String.valueOf(path));
+		FileWriter fw1 = new FileWriter(String.valueOf(path1));
 
 		for(MenuItem menuItem: this.Menu) {
 			try {
