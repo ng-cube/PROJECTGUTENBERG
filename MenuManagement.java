@@ -9,7 +9,7 @@ import java.text.DecimalFormat;
 public class MenuManagement implements OPInterface {
 	private Scanner sc = new Scanner(System.in);
 	private ArrayList<MenuItem> Menu = new ArrayList<MenuItem>();
-	private ArrayList<PromoItem> PromoMenu;
+	private ArrayList<PromoItem> PromoMenu = new ArrayList<PromoItem>();
 	private int globalIndex = 1;
 
 	public MenuManagement(){
