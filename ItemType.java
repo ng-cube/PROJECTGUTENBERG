@@ -1,4 +1,4 @@
-public enum MenuType {
+public enum ItemType {
 	MAIN,
 	DESSERT,
 	STARTER,
