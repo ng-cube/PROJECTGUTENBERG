@@ -13,7 +13,7 @@ public class RRPSS {
 	 * 
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ParseException, IOException {
 		Scanner sc = new Scanner(System.in);
 		int user_choice = 0;
 
