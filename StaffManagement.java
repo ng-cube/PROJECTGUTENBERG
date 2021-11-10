@@ -119,6 +119,10 @@ public class StaffManagement implements OPInterface {
 		return StaffList.get(id);
 	}
 
+	public int getStaffSize() {
+		return StaffList.size();
+	}
+
 	public void displayInterface() {
 		System.out.println("\t(1) - ADD a new staff");
 		System.out.println("\t(2) - EDIT a current staff");
