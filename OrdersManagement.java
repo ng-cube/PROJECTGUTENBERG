@@ -177,57 +177,91 @@ public class OrdersManagement implements OPInterface {
 	public void printInvoice(int id) {
 		Order order = get(id);
 		System.out.println(new String(new char[41]).replace("\0", " ") + "Cafe" + new String(new char[36]).replace("\0", " "));
-        System.out.println(new String(new char[26]).replace("\0", " ") + new String(new char[36]).replace("\0", "*"));
-        System.out.println(new String(new char[40]).replace("\0", " ") + "Address" + new String(new char[36]).replace("\0", ""));
-        System.out.println(new String(new char[26]).replace("\0", " ") + new String(new char[36]).replace("\0", "-"));
-        System.out.println(new String(new char[37]).replace("\0", " ") + "Order Invoice");
-        System.out.println(new String(new char[26]).replace("\0", " ") + new String(new char[36]).replace("\0", "-"));
+        	System.out.println(new String(new char[26]).replace("\0", " ") + new String(new char[36]).replace("\0", "*"));
+        	System.out.println(new String(new char[40]).replace("\0", " ") + "Address" + new String(new char[36]).replace("\0", ""));
+        	System.out.println(new String(new char[26]).replace("\0", " ") + new String(new char[36]).replace("\0", "-"));
+        	System.out.println(new String(new char[37]).replace("\0", " ") + "Order Invoice");
+        	System.out.println(new String(new char[26]).replace("\0", " ") + new String(new char[36]).replace("\0", "-"));
 
-        System.out.printf("%n%-47s", "Order ID: " + order.getOrderID());
-        System.out.printf("%-20s",
+        	System.out.printf("%n%-47s", "Order ID: " + order.getOrderID());
+        	System.out.printf("%-20s",
                 "Staff ID: " + order.getStaffID());
-        System.out.printf("%20s%n",
+        	System.out.printf("%20s%n",
                 "Table ID: " + order.getTableID());
 
-        System.out.printf("%-47s", "Order Date/Time: "+ order.getDate());
+        	System.out.printf("%-47s", "Order Date/Time: "+ order.getDate());
 
 		float total_cost = 0;
 
-        for(Integer item : order.getItemList())
-        {
-            System.out.printf("%5s%-5s: ", "", ("(" + item + ")") );
-            MenuItem menuitem = MenuMgr.get(item);
-			System.out.println(menuitem.getName()+"              "+menuitem.getPrice());
-			total_cost += menuitem.getPrice();
-        }
+        	for(Integer item : order.getItemList()) {
+            	System.out.printf("%5s%-5s: ", "", ("(" + item + ")") );
+            	MenuItem menuitem = MenuMgr.get(item);
+		System.out.println(menuitem.getName()+"              "+menuitem.getPrice());
+		total_cost += menuitem.getPrice();
+        	}
 
-        System.out.println("\n" + new String(new char[87]).replace("\0", "-"));
+        	System.out.println("\n" + new String(new char[87]).replace("\0", "-"));
 
-        System.out.printf("%87s%n", "Subtotal: " +
+        	System.out.printf("%87s%n", "Subtotal: " +
                 new DecimalFormat("$###,##0.00").format(total_cost));
 
-        System.out.printf("%n%87s%n", "+10% Service Charge");
-        System.out.printf("%87s%n", "+7% Goods & Service Tax");
+        	System.out.printf("%n%87s%n", "+10% Service Charge");
+        	System.out.printf("%87s%n", "+7% Goods & Service Tax");
 		total_cost *= 1.17;
 
-        if(order.getMembership())
-        {
-            System.out.printf("%87s%n", "-10% membership discount");
+        	if(order.getMembership()) {
+            	System.out.printf("%87s%n", "-10% membership discount");
 			total_cost *= 0.9;
-        }
+        	}
 
-        System.out.printf("%n%87s%n", "Total Payable: " +
+        	System.out.printf("%n%87s%n", "Total Payable: " +
                 new DecimalFormat("$###,##0.00").format(total_cost));
 
-        System.out.println(new String(new char[87]).replace("\0", "-") + "\n");
+        	System.out.println(new String(new char[87]).replace("\0", "-") + "\n");
 
-        System.out.print(new String(new char[28]).replace("\0", "*"));
-        System.out.print(" Thank you for dining with us! ");
-        System.out.println(new String(new char[28]).replace("\0", "*"));
-    }
+        	System.out.print(new String(new char[28]).replace("\0", "*"));
+        	System.out.print(" Thank you for dining with us! ");
+        	System.out.println(new String(new char[28]).replace("\0", "*"));
+    	}
 
 	public void printReport(Date startDate, Date endDate) {
+		int start_ts = this._convert_times_to_ts(startDate);
+		int end_ts = this._convert_times_to_ts(endDate);
+		int total_cost_of_day = 0;
+		int total_cost = 0;
+		System.out.println(new String(new char[87]).replace("\0", "-"));
+		System.out.println("|" + new String(new char[18]).replace("\0", " ") + "Sales Revenue Report from " + startDate + " to " + endDate + new String(new char[17]).replace("\0", " ") + "|");
+		System.out.println(new String(new char[87]).replace("\0", "-"));
+		for (int i=start_ts; i<=end_ts; i+=(60*60*24)){
+			for (int j=0; j<OrderList.size(); j++){
+				if (this._convert_times_to_ts(OrderList.get(j).getDate())==i) {
+					Order order = get(j);
+					for(Integer item : order.getItemList())
+					{
+						MenuItem menuitem = MenuMgr.get(item);
+						total_cost_of_day += menuitem.getPrice();
+						total_cost += menuitem.getPrice();
+					}
+				}
+			}
+			String date = new java.text.SimpleDateFormat("yyyy-MM-dd").format(new Date(i*1000));
+			System.out.print("| ");
+			System.out.printf("%10s", date);
+			System.out.printf("%75s\n", new DecimalFormat("$###,##0.00").format(total_cost_of_day) +" |");
+			System.out.println(new String(new char[87]).replace("\0", "-"));
+		}
+		System.out.print("| Total Revenue from " + startDate + " to " + endDate);
+		System.out.printf("%42s\n",new DecimalFormat("$###,##0.00").format(total_cost) + " |");
+		System.out.println(new String(new char[87]).replace("\0", "-"));
+	}
+	
+	private static int _convert_times_to_ts(Date parsedDate) {
+		return (int) Math.floorDiv(parsedDate.getTime(), 1000);
+	}
 
+	private static Date _convert_string_to_date(String date) throws ParseException {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");//("yyyy-MM-dd hh:mm:ss.SSS");
+		return dateFormat.parse(date);
 	}
 
 	public void displayInterface(){
@@ -305,7 +339,14 @@ public class OrdersManagement implements OPInterface {
 					break;
 					
 				case 6:
-					return;
+					System.out.println("Please enter the starting date (yyyy-MM-dd) for this report: ");
+					String start = sc.nextLine(); //yyyy-MM-dd
+					Date start_date = _convert_string_to_date(start);
+					System.out.println("Please enter the ending date (yyyy-MM-dd) for this report: ");
+					String end = sc.nextLine(); //yyyy-MM-dd
+					Date end_date = _convert_string_to_date(end);
+					printReport(start_date, end_date);
+					break;
 					
 				default:
 					System.out.println("Invalid input, please select one of the options above.");
