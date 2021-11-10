@@ -9,15 +9,10 @@ import java.util.Scanner;
 
 public class StaffManagement implements OPInterface {
 	private Scanner sc = new Scanner(System.in);
-	private ArrayList<Staff> StaffList = new ArrayList<Staff>();
+	private ArrayList<Staff> StaffList = new ArrayList<>();
 
-	public StaffManagement(){
-		if(!read()){
-			System.out.println("Corrupted file.");
-		}
-	}
+	public StaffManagement() throws IOException {
 
-	public boolean read(){
 		Path path = Paths.get("Staff.txt");
 
 		try (BufferedReader br = Files.newBufferedReader(path)) {
@@ -30,11 +25,7 @@ public class StaffManagement implements OPInterface {
 
 				line = br.readLine();
 			}
-		}catch(IOException e){
-			return false;
 		}
-
-		return true;
 	}
 
 	public boolean add() throws IOException {
@@ -140,7 +131,6 @@ public class StaffManagement implements OPInterface {
 			System.out.println("\t(2) - EDIT a current staff");
 			System.out.println("\t(3) - DELETE a current staff");
 			System.out.println("\t(4) - VIEW all the staff");
-			System.out.println("\t(5) - Quit");
 			user_choice = sc.nextInt();
 
 			switch (user_choice)
@@ -210,11 +200,7 @@ public class StaffManagement implements OPInterface {
 					// VIEW all staff
 					display();
 					break;
-				
 
-				case 5:
-					return;
-					
 				default:
 					System.out.println("Invalid input, please select one of the options above.");
 					break;
