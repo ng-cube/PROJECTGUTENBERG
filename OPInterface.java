@@ -1,18 +1,18 @@
 public interface OPInterface {
 
-	boolean add();
+	boolean add() throws IOException;
 
 	/**
 	 * 
 	 * @param id
 	 */
-	boolean remove(int id);
+	boolean remove(int id) throws IOException;
 
 	/**
 	 * 
 	 * @param id
 	 */
-	boolean edit(int id);
+	boolean edit(int id) throws IOException;
 
 	void display();
 
