@@ -140,6 +140,7 @@ public class StaffManagement implements OPInterface {
 			System.out.println("\t(2) - EDIT a current staff");
 			System.out.println("\t(3) - DELETE a current staff");
 			System.out.println("\t(4) - VIEW all the staff");
+			System.out.println("\t(5) - Quit");
 			user_choice = sc.nextInt();
 
 			switch (user_choice)
@@ -209,7 +210,11 @@ public class StaffManagement implements OPInterface {
 					// VIEW all staff
 					display();
 					break;
+				
 
+				case 5:
+					return;
+					
 				default:
 					System.out.println("Invalid input, please select one of the options above.");
 					break;

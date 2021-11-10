@@ -44,7 +44,7 @@ public class MenuManagement implements OPInterface {
 				String[] tokens = line.split(",");
 				int n = tokens.length;
 				int j = 5;
-
+				
 				MenuItem.ItemType e = MenuItem.ItemType.valueOf(tokens[3]);
 				ArrayList<Integer> itemIDs = new ArrayList<>();
 
@@ -275,67 +275,80 @@ public class MenuManagement implements OPInterface {
 	}
 
 	public void displayInterface() throws IOException {
-		System.out.println("\t(1) - CREATE a new Menu item");
-		System.out.println("\t(2) - UPDATE a current Menu item");
-		System.out.println("\t(3) - DELETE a current Menu item");
-		System.out.println("\t(4) - ADD a new Promo item to existing Promo set");
-		System.out.println("\t(5) - REMOVE a Promo item from Promo set");
-
-		int input = sc.nextInt();
+		
 		int id;
-		switch(input) {
-			case 1:
-				if (add()) {
-					System.out.println("Added successfully!");
-				} else {
-					System.out.println("Not added!");
-				}
-				break;
+		while(true){
+			System.out.println("\t(1) - CREATE a new Menu item");
+			System.out.println("\t(2) - UPDATE a current Menu item");
+			System.out.println("\t(3) - DELETE a current Menu item");
+			System.out.println("\t(4) - ADD a new Promo item to existing Promo set");
+			System.out.println("\t(5) - REMOVE a Promo item from Promo set");
+			System.out.println("\t(6) - DISPLAY menu");
+			System.out.println("\t(7) - Quit");
 
-			case 2:
-				System.out.println("Please select an item you would like to edit: ");
-				id = sc.nextInt();
-				if (edit(id)) {
-					System.out.println("Changes made successfully!");
-				} else {
-					System.out.println("Changes were not made.");
-				}
-				break;
-
-			case 3:
-				System.out.println("Please select an item id to delete: ");
-				id = sc.nextInt();
-				if (remove(id)) {
-					System.out.println("Deleted successfully!");
-				} else {
-					System.out.println("Item not deleted.");
-				}
-				break;
-
-			case 4:
-				System.out.println("Please enter the promo set id: ");
-				id = sc.nextInt();
-				if (addItemToPromo(id)) {
-					System.out.println("Added item successfully to promo set!");
-				} else {
-					System.out.println("Item not added.");
-				}
-				break;
-
-			case 5:
-				System.out.println("Please enter the promo set id: ");
-				id = sc.nextInt();
-				if (removeItemFromPromo(id)) {
-					System.out.println("Item successfully removed from promo set!");
-				} else {
-					System.out.println("Item not removed.");
-				}
-				break;
-
-			default:
-				System.out.println("Invalid input!");
-				break;
+			int input = sc.nextInt();
+			switch(input) {
+				case 1:
+					if (add()) {
+						System.out.println("Added successfully!");
+					} else {
+						System.out.println("Not added!");
+					}
+					break;
+	
+				case 2:
+					System.out.println("Please select an item you would like to edit: ");
+					id = sc.nextInt();
+					if (edit(id)) {
+						System.out.println("Changes made successfully!");
+					} else {
+						System.out.println("Changes were not made.");
+					}
+					break;
+	
+				case 3:
+					System.out.println("Please select an item id to delete: ");
+					id = sc.nextInt();
+					if (remove(id)) {
+						System.out.println("Deleted successfully!");
+					} else {
+						System.out.println("Item not deleted.");
+					}
+					break;
+	
+				case 4:
+					System.out.println("Please enter the promo set id: ");
+					id = sc.nextInt();
+					if (addItemToPromo(id)) {
+						System.out.println("Added item successfully to promo set!");
+					} else {
+						System.out.println("Item not added.");
+					}
+					break;
+	
+				case 5:
+					System.out.println("Please enter the promo set id: ");
+					id = sc.nextInt();
+					if (removeItemFromPromo(id)) {
+						System.out.println("Item successfully removed from promo set!");
+					} else {
+						System.out.println("Item not removed.");
+					}
+					break;
+	
+				case 6:
+					display();
+					break;
+				
+				case 7:
+					return;
+	
+				default:
+					System.out.println("Invalid input!");
+					break;
+			}
 		}
+		
 	}
 
 	public void write() throws IOException {
