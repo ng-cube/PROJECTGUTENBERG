@@ -3,7 +3,8 @@ public class MenuItem {
 		MAIN,
 		DESSERT,
 		STARTER,
-		DRINK
+		DRINK,
+		PROMO
 	}
 	private float price;
 	private String description;
