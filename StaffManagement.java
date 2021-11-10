@@ -124,9 +124,72 @@ public class StaffManagement implements OPInterface {
 	}
 
 	public void displayInterface() {
-		System.out.println("\t(1) - ADD a new staff");
-		System.out.println("\t(2) - EDIT a current staff");
-		System.out.println("\t(3) - DELETE a current staff");
+		int user_choice = 0;
+		int staff_id;
+		while (true) {
+			System.out.println("\t(1) - ADD a new staff");
+			System.out.println("\t(2) - EDIT a current staff");
+			System.out.println("\t(3) - DELETE a current staff");
+			System.out.println("\t(4) - VIEW all the staff");
+			user_choice = sc.nextInt();
+
+			switch (user_choice)
+			{
+				case 1:
+					// ADD a new staff
+					boolean added = add();
+					if(!added){
+						System.out.println("The new staff was not added. Please refer to error message above.");
+					}
+					else{
+						System.out.println("A new staff added to the system successfully.");
+					}
+					break;
+
+				case 2:
+					// Edit a current staff
+					System.out.println("Please enter the ID of the staff you would like to modify:");
+					staff_id = sc.nextInt();
+					if(staff_id < 0 || staff_id > StaffList.size()){
+						System.out.println("The ID you've entered is invalid.");
+						break;
+					}
+					boolean edited = edit(staff_id);
+
+					if(edited){
+						System.out.println("The operation was successful.");
+					}else{
+						System.out.println("The operation was unsuccessful, please refer to the error above.");
+					}
+					break;
+
+				case 3:
+					// Delete a current staff
+					System.out.println("Please enter the ID of the staff you would like to delete:");
+					staff_id = sc.nextInt();
+					if(staff_id < 0 || staff_id > StaffList.size()){
+						System.out.println("The ID you've entered is invalid.");
+						break;
+					}
+					boolean deleted = remove(staff_id);
+
+					if(deleted){
+						System.out.println("A staff was removed from the system successfully.");
+					}else{
+						System.out.println("The staff was not removed. Please refer to error message above.");
+					}
+					break;
+
+				case 4:
+					// VIEW all staff
+					display();
+					break;
+
+				default:
+					System.out.println("Invalid input, please select one of the options above.");
+					break;
+			}
+		}
 	}
 
 	public void writeToCsv() throws IOException {
