@@ -5,6 +5,13 @@ public class Staff {
 	private String jobTitle;
 	private String gender;
 
+	public Staff (int staffID, String name, String jobTitle, String gender) {
+		this.staffID = staffID;
+		this.name = name;
+		this.jobTitle = jobTitle;
+		this.gender = gender;
+	}
+
 	public int getStaffID() {
 		return this.staffID;
 	}
