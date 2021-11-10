@@ -1,4 +1,4 @@
-public enum Class {
+public enum MenuType {
 	MAIN,
 	DESSERT,
 	STARTER,
