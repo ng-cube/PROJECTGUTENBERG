@@ -133,10 +133,10 @@ public class BookingManagement implements OPInterface {
 						System.out.println("Unable to write to file.");
 					}
 					if(!removed){
-						System.out.println("The order was not created. Please refer to error message above.");
+						System.out.println("The reservation was not removed.Please refer to error message above.");
 					}
 					else{
-						System.out.println("Order created successfully.");
+						System.out.println("Reservation removed successfully.");
 					}
 					break;
 					
@@ -166,12 +166,15 @@ public class BookingManagement implements OPInterface {
 		}
 
 		System.out.println("Please enter the name of the customer");
+		sc.nextLine();
 		String name = sc.nextLine();
 		
 		System.out.println("Please enter the contact number of the customer");
+		sc.nextLine();
 		String contact = sc.nextLine();
 	
 		System.out.println("Please enter the reservation date:");
+		sc.nextLine();
 		String inputdate = sc.nextLine();
 		try {
 			date = df1.parse(inputdate);
@@ -240,6 +243,7 @@ public class BookingManagement implements OPInterface {
 				
 			case 3:
 				System.out.println("Please enter the new customer name: ");
+				sc.nextLine();
 				String name = sc.nextLine();
 				reservation.setName(name);
 				ReservationList.set(id, reservation);
@@ -248,6 +252,7 @@ public class BookingManagement implements OPInterface {
 				
 			case 4:
 				System.out.println("Please enter the new contact number: ");
+				sc.nextLine();
 				String contactnr = sc.nextLine();
 				reservation.setContact(contactnr);
 				ReservationList.set(id, reservation);
@@ -374,10 +379,10 @@ public class BookingManagement implements OPInterface {
 
 	public boolean invalid(int order_no){
 		if(order_no >= ReservationList.size() || order_no < 0){
-			return false;
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 }
