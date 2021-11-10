@@ -31,7 +31,7 @@ public class OrdersManagement implements OPInterface {
 	}
 
 	public boolean read(){
-		Path path = Paths.get("Order.txt");
+		Path path = Paths.get("Orders.txt");
 		try (BufferedReader br = Files.newBufferedReader(path)) {
 			String line = br.readLine();
 
