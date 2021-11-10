@@ -1,0 +1,7 @@
+Reservation_ID, name, contact, pax, tableID, startTime
+0, John Doe, 92348543, 3, 4, 
+1, Kong Ming, 93233345, 5, 6,
+2, Lim King, 87777777, 10, 9,
+3, Zhuge, 92234567, 10, 10,
+4, Kum Chiong, 88881111, 1, 2,
+5, Yam Seng, 92341234, 2, 1,
