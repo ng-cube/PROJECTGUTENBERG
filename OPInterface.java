@@ -1,22 +1,24 @@
+import java.io.IOException;
+
 public interface OPInterface {
 
-	boolean add() throws IOException;
+	boolean add();
 
 	/**
 	 * 
 	 * @param id
 	 */
-	boolean remove(int id) throws IOException;
+	boolean remove(int id);
 
 	/**
 	 * 
 	 * @param id
 	 */
-	boolean edit(int id) throws IOException;
+	boolean edit(int id);
 
 	void display();
 
-	void write();
+	void write() throws IOException;
 
 	void sort();
 
