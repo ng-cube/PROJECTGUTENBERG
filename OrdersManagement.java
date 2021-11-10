@@ -222,6 +222,7 @@ public class OrdersManagement implements OPInterface {
         	System.out.print(new String(new char[28]).replace("\0", "*"));
         	System.out.print(" Thank you for dining with us! ");
         	System.out.println(new String(new char[28]).replace("\0", "*"));
+		OrderList.get(id).setPaid(true);
     	}
 
 	public void printReport(Date startDate, Date endDate) {
