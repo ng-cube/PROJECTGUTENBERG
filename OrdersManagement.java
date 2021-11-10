@@ -264,7 +264,7 @@ public class OrdersManagement implements OPInterface {
 		return dateFormat.parse(date);
 	}
 
-	public void displayInterface(){
+	public void displayInterface() throws ParseException {
 		int user_choice = 0;
 		int order_no;
 		while (true)
