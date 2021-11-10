@@ -1,3 +1,8 @@
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Calendar;
+import java.text.SimpleDateFormat;
+
 public class Reservation {
 
 	private int reservationID;
@@ -5,7 +10,18 @@ public class Reservation {
 	private int tableID;
 	private String name;
 	private String contact;
-	private date startTime;
+	private Date date;
+	private int startTime;
+
+	public Reservation(int reservationID,String name,String contact,int nrPax,int tableID,Date date,int startTime){
+		this.reservationID = reservationID;
+		this.nrPax = nrPax;
+		this.tableID = tableID;
+		this.name = name;
+		this.contact = contact;
+		this.date = date;
+		this.startTime = startTime;
+	}
 
 	public int getReservationID() {
 		return this.reservationID;
@@ -67,7 +83,7 @@ public class Reservation {
 		this.contact = contact;
 	}
 
-	public date getStartTime() {
+	public int getStartTime() {
 		return this.startTime;
 	}
 
@@ -75,8 +91,29 @@ public class Reservation {
 	 * 
 	 * @param startTime
 	 */
-	public void setStartTime(date startTime) {
+	public void setStartTime(int startTime) {
 		this.startTime = startTime;
 	}
 
+	public Date getDate() {
+		return this.date;
+	}
+
+	/**
+	 * 
+	 * @param date
+	 */
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public void  printReservation(){
+		System.out.println(reservationID);
+		System.out.println(nrPax);
+		System.out.println(tableID);
+		System.out.println(name);
+		System.out.println(contact);
+		System.out.println(date);
+		System.out.println(startTime);
+	}
 }

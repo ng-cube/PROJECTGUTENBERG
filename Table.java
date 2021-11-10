@@ -4,7 +4,13 @@ public class Table {
 	private int capacity;
 	private boolean occupied;
 	private boolean availability;
-
+	//read from file
+	public Table(int tableID,int capacity,boolean occupied,boolean availability){
+		this.tableID = tableID;
+		this.capacity = capacity;
+		this.occupied = false;
+		this.availability = true;
+	}
 	public int getTableID() {
 		return this.tableID;
 	}
