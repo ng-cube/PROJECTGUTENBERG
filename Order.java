@@ -23,6 +23,7 @@ public class Order {
 		hour = orderhour;
 		membership = member;
 		paid = payment;
+		itemList = new ArrayList<Integer>();
 	}
 
 	public boolean getMembership(){
@@ -85,9 +86,13 @@ public class Order {
 		System.out.print("   Order ID: " + getOrderID());
 		System.out.printf("   Staff ID: " + getStaffID());
 		System.out.println("   Table ID: " + getTableID());
+		System.out.print(("   Membership: "+getMembership()));
+		System.out.println(("   Paid: "+getPaid()));
+		System.out.print("   Order Item ID: ");
 		for (int j=0; j<itemList.size(); j++) {
-			System.out.println("   Order Item ID: " + itemList.get(j));
+			System.out.print(itemList.get(j)+", ");
 		}
+		System.out.println();
 		System.out.println();
 	}
 
@@ -99,13 +104,22 @@ public class Order {
 		for(int i=0; i<num_items; i++){
 			System.out.println("Please enter the ID of "+i+" item to be added");
 			item_id = sc.nextInt();
-			if(item_id < 0 || item_id >= MenuMgr.getMenuSize()){
+			if(item_id < 1 || item_id >= MenuMgr.getMenuSize()+1){
 				System.out.println("Please enter a valid item id.");
 				i--;
 			}
-			itemList.add(item_id);
+			else{
+				itemList.add(item_id);
+			}
 		}
 		
+		return true;
+	}
+
+	public boolean addItems(ArrayList<Integer> aList) {
+		for(Integer item: aList){
+			itemList.add(item);
+		}
 		return true;
 	}
 
@@ -121,11 +135,13 @@ public class Order {
 				System.out.println("There are no items on the order.");
 				return false;
 			}
-			if(item_id < 0 || item_id >= MenuMgr.getMenuSize()){
+			if(item_id < 1 || item_id >= MenuMgr.getMenuSize()+1){
 				System.out.println("Please enter a valid item id.");
 				i--;
 			}
-			itemList.add(item_id);
+			else{
+				itemList.add(item_id);
+			}
 		}
 		return true;
 	}
