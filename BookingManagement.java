@@ -7,7 +7,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 //import java.text.ParsePosition;
 
-
+import java.util.InputMismatchException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -150,8 +150,16 @@ public class BookingManagement implements OPInterface {
 					break;
 
 				case 5:
+					display();
 					System.out.println("Please enter the ID of the reservation you would like to remove:");
 					reservation_no = sc.nextInt();
+					try{
+						reservation_no = sc.nextInt();
+					}catch(InputMismatchException e){
+						System.out.println("Please enter an integer.");
+						break;
+					}
+
 					boolean removed = false;
 					try {
 						removed = remove(reservation_no);
@@ -235,6 +243,7 @@ public class BookingManagement implements OPInterface {
 			write();
 			return true;
 		} else {
+			System.out.println("The ID you have chosen is out of range. Please choose an ID between 0 to "+ReservationList.size()+".");
 			return false;
 		}
 	}
@@ -303,6 +312,7 @@ public class BookingManagement implements OPInterface {
 
 
 	public void display() {
+		System.out.println("List of reservations: ");
 		for (Reservation item : ReservationList) {
 			item.printReservation();
 		}
