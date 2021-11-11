@@ -442,7 +442,7 @@ public class MenuManagement implements OPInterface {
 				fw.write(menuItem.getName() + ",");
 				fw.write(menuItem.getDescription() + ",");
 				fw.write(menuItem.get_menu_type() + ",");
-				fw.write(menuItem.getPrice() + "");
+				fw.write(menuItem.getPrice() + ",");
 				fw.write(System.lineSeparator());
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -455,7 +455,7 @@ public class MenuManagement implements OPInterface {
 				fw1.write(promoItem.getName() + ",");
 				fw1.write(promoItem.getDescription() + ",");
 				fw1.write(promoItem.get_menu_type() + ",");
-				fw1.write(promoItem.getPrice() + "");
+				fw1.write(promoItem.getPrice() + ",");
 				for (int i=0; i<promoItem.getItemIDs().size(); i++) {
 					fw1.write(promoItem.getItemIDs().get(i) + ",");
 				}
