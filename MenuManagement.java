@@ -262,14 +262,35 @@ public class MenuManagement implements OPInterface {
 
 	public boolean removeItemFromPromo(int id) throws IOException {
 		if (!checkPromoSet(id)) {
-			return false;
-		}
-		System.out.println("How many items would you like to remove?");
-		int num = sc.nextInt();
-		ArrayList<Integer> arr = PromoMenu.get(id).removeitem(num);
-		PromoMenu.get(id).setItemIDs(arr);
-		write();
-		return true;
+            return false;
+        }
+        int j = 0;
+        for (PromoItem promoItem : PromoMenu) {
+            if (promoItem.getMenuIndex() == id) {
+                break;
+            }
+            j++;
+        }
+        System.out.println("These are the items in this Promo Set: ");
+        for (int i=0; i<PromoMenu.get(j).getItemIDs().size(); i++) {
+            String names = "";
+            names += String.valueOf(i);
+            names += ". ";
+            String item = Menu.get(PromoMenu.get(j).getItemIDs().get(i)-1).getName();
+            names += item;
+            System.out.println(names);
+        }
+        ArrayList<Integer> arr = PromoMenu.get(j).getItemIDs();
+        System.out.println("How many items would you like to remove?");
+        int num = sc.nextInt();
+        for (int i=0; i<num; i++) {
+            System.out.println("Please select which item you would like to remove: ");
+            int choice = sc.nextInt();
+            arr.remove(choice);
+        }
+        PromoMenu.get(j).setItemIDs(arr);
+        write();
+        return true;
 	}
 
 	public boolean checkPromoSet(int id) {
