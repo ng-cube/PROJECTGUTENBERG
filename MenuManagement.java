@@ -196,6 +196,23 @@ public class MenuManagement implements OPInterface {
 			System.out.println("\n" + new String(new char[87]).replace("\0", "-"));
 			System.out.println();
 		}
+		/*for (PromoItem promoItem : PromoMenu) {
+            		System.out.print("   " + promoItem.getMenuIndex());
+            		System.out.printf("%-70s", " ~ " + promoItem.getName());
+            		System.out.printf("%-8s%n",
+                    	new DecimalFormat("$###,##0.00").format(promoItem.getPrice()));
+            		System.out.print("   " + promoItem.get_menu_type() + "  ");
+            		for (int i=0; i<promoItem.getItemIDs().size(); i++) {
+                		String item = Menu.get(promoItem.getItemIDs().get(i)).getName();
+                		list_of_names += item;
+                		if (i != promoItem.getItemIDs().size()-1) {
+                    			list_of_names += ", ";
+                		}
+            		}
+            		System.out.printf("%-60s%n", "\"" + list_of_names + "\"");
+            		System.out.println("\n" + new String(new char[87]).replace("\0", "-"));
+            		System.out.println();
+        	} */
 	}
 
 	public void sort() {
