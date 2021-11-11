@@ -69,7 +69,6 @@ public class MenuManagement implements OPInterface {
 	public boolean add() throws IOException {
 		//int index = Menu.size() + 1;
 		System.out.println("Name of Menu Item you would like to add: ");
-		sc.nextLine();
 		String name = sc.nextLine();
 		System.out.println("Price of Menu Item you would like to add: ");
 		float price = sc.nextFloat();
@@ -77,7 +76,6 @@ public class MenuManagement implements OPInterface {
 		MenuItem.list_enum_types();
 		int enum_int = sc.nextInt();
 		System.out.println("Description of Menu Item you would like to add: ");
-		sc.nextLine();
 		String description = sc.nextLine();
 
 		for(int i=0; i<Menu.size(); i++){
@@ -113,12 +111,15 @@ public class MenuManagement implements OPInterface {
 				break;
 			}
 		}
+		int i=0;
 		for (PromoItem promoItem : PromoMenu) {
+			System.out.println("PROOMOOMOMOM INDEX: " + promoItem.getMenuIndex());
 			if (promoItem.getMenuIndex() == id) {
-				PromoMenu.remove(id);
+				PromoMenu.remove(i);
 				changed = true;
 				break;
 			}
+			i++;
 		}
 
 		// also removes it from file (just override with the current list)
@@ -145,7 +146,6 @@ public class MenuManagement implements OPInterface {
 		switch(input){
 			case 1:
 				System.out.println("New name: ");
-				sc.nextLine()
 				String name = sc.nextLine();
 				menuItem.setName(name);
 				Menu.set(id, menuItem);
@@ -168,7 +168,6 @@ public class MenuManagement implements OPInterface {
 				break;
 			case 4:
 				System.out.println("New Description: ");
-				sc.nextLine()
 				String description = sc.nextLine();
 				menuItem.setDescription(description);
 				Menu.set(id, menuItem);
