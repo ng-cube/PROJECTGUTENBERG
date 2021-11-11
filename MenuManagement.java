@@ -67,35 +67,66 @@ public class MenuManagement implements OPInterface {
 	}
 
 	public boolean add() throws IOException {
-		//int index = Menu.size() + 1;
-		System.out.println("Name of Menu Item you would like to add: ");
-		String name = sc.nextLine();
-		System.out.println("Price of Menu Item you would like to add: ");
-		float price = sc.nextFloat();
-		System.out.println("Type of Menu Item you would like to add: ");
-		MenuItem.list_enum_types();
-		int enum_int = sc.nextInt();
-		System.out.println("Description of Menu Item you would like to add: ");
-		String description = sc.nextLine();
+		System.out.println("Would you like to add a: ");
+		System.out.println("(1) - Menu Item ");
+		System.out.println("(2) - Promo Set ");
+		int input = sc.nextInt();
+		if (input == 1) {
+			System.out.println("Name of Menu Item you would like to add: ");
+			String name = sc.nextLine();
+			System.out.println("Price of Menu Item you would like to add: ");
+			float price = sc.nextFloat();
+			System.out.println("Type of Menu Item you would like to add: ");
+			MenuItem.list_enum_types();
+			int enum_int = sc.nextInt();
+			System.out.println("Description of Menu Item you would like to add: ");
+			String description = sc.nextLine();
 
-		for(int i=0; i<Menu.size(); i++){
-			if(this.Menu.get(i).getName().equals(name) && this.Menu.get(i).type ==  MenuItem.ItemType.values()[enum_int]){
-				System.out.println("Item is already on the menu.");
-				return false;
+			for(int i=0; i<Menu.size(); i++){
+				if(this.Menu.get(i).getName().equals(name) && this.Menu.get(i).type ==  MenuItem.ItemType.values()[enum_int]){
+					System.out.println("Item is already on the menu.");
+					return false;
+				}
 			}
-		}
-		// return false if failed and print the reason why
 
-		// add object at end of arraylist
-		// instantiate object
-		this.Menu.add(new MenuItem(globalIndex, name, description, MenuItem.ItemType.values()[enum_int], price));
-		globalIndex ++;
+			this.Menu.add(new MenuItem(globalIndex, name, description, MenuItem.ItemType.values()[enum_int], price));
+			globalIndex ++;
+		}
+		else {
+			System.out.println("Name of Promo Set you would like to add: ");
+			sc.nextLine();
+			String name = sc.nextLine();
+			for (int i=0; i<PromoMenu.size(); i++) {
+				if (this.PromoMenu.get(i).getName().equals(name)) {
+					System.out.println("Promo set is already on the menu.");
+					return false;
+				}
+			}
+
+			System.out.println("Price of Promo Set you would like to add: ");
+			float price = sc.nextFloat();
+			System.out.println("Description of Promo Set you would like to add: ");
+			String description = sc.next();
+
+			ArrayList<Integer> arr = new ArrayList<>();
+			System.out.println("How many items would you like to add into Promo Set?");
+			int num = sc.nextInt();
+			System.out.println("Please enter the item ids: ");
+			for (int j=0; j<num; j++) {
+				int id = sc.nextInt();
+				arr.add(id);
+			}
+
+			this.PromoMenu.add(new PromoItem(globalIndex, name, description, MenuItem.ItemType.values()[4], price, arr));
+			globalIndex ++;
+		}
 
 		// sort the items by their enum so that they are in the correct order when being printed
 		this.sort();
 		write();
 		return true;
 	}
+
 
 	/**
 	 *
@@ -252,10 +283,17 @@ public class MenuManagement implements OPInterface {
 		if (!checkPromoSet(id)) {
 			return false;
 		}
+		int i = 0;
+		for (PromoItem promoItem : PromoMenu) {
+			if (promoItem.getMenuIndex() == id) {
+				break;
+			}
+			i++;
+		}
 		System.out.println("How many items would you like to add?");
 		int num = sc.nextInt();
-		ArrayList<Integer> arr = PromoMenu.get(id).additem(num);
-		PromoMenu.get(id).setItemIDs(arr);
+		ArrayList<Integer> arr = PromoMenu.get(i).additem(num);
+		PromoMenu.get(i).setItemIDs(arr);
 		write();
 		return true;
 	}
