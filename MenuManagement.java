@@ -113,7 +113,6 @@ public class MenuManagement implements OPInterface {
 		}
 		int i=0;
 		for (PromoItem promoItem : PromoMenu) {
-			System.out.println("PROOMOOMOMOM INDEX: " + promoItem.getMenuIndex());
 			if (promoItem.getMenuIndex() == id) {
 				PromoMenu.remove(i);
 				changed = true;
