@@ -1,15 +1,23 @@
+
+
+import java.util.ArrayList;
+
 public class Table {
 
 	private int tableID;
 	private int capacity;
 	private boolean occupied;
 	private boolean availability;
+	private ArrayList<String> slots;
+	
+	
 	//read from file
-	public Table(int tableID,int capacity,boolean occupied,boolean availability){
+	public Table(int tableID,int capacity,boolean occupied,boolean availability,ArrayList<String>slots){
 		this.tableID = tableID;
 		this.capacity = capacity;
 		this.occupied = false;
 		this.availability = true;
+		this.slots = slots;
 	}
 	public int getTableID() {
 		return this.tableID;
@@ -57,6 +65,19 @@ public class Table {
 	 */
 	public void setAvailability(boolean availability) {
 		this.availability = availability;
+	}
+
+	
+	public ArrayList<String> getSlots() {
+		return this.slots;
+	}
+
+	/**
+	 * 
+	 * @param availability
+	 */
+	public void setTimeslot(ArrayList<String> slots) {
+		this.slots = slots;
 	}
 
 }

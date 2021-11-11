@@ -5,6 +5,8 @@ import java.util.Calendar;
 import java.text.SimpleDateFormat;
 import java.text.DateFormat;
 import java.text.ParseException;
+//import java.text.ParsePosition;
+
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,7 +19,7 @@ public class BookingManagement implements OPInterface {
 	private Scanner sc = new Scanner(System.in);
 	private ArrayList<Reservation> ReservationList;
 	private ArrayList<Table> TableList = new ArrayList<>();
-	//constructor
+	
 
 	public BookingManagement() {
 		this.ReservationList = new ArrayList<>();
@@ -33,7 +35,14 @@ public class BookingManagement implements OPInterface {
 
 			while (line != null) {
 				String[] tokens = line.split(",");
-				Table table = new Table(Integer.parseInt(tokens[0]), Integer.parseInt(tokens[1]), Boolean.parseBoolean(tokens[2]), Boolean.parseBoolean(tokens[3]));
+
+				ArrayList<String> reserveSlots = new ArrayList<>();
+				for(int i=0;i<tokens.length-4;i++){
+					reserveSlots.add(tokens[4+i]);
+				}
+
+				Table table = new Table(Integer.parseInt(tokens[0]), Integer.parseInt(tokens[1]), Boolean.parseBoolean(tokens[2]), 
+										Boolean.parseBoolean(tokens[3]),reserveSlots);
 				TableList.add(table);
 				line = br.readLine();
 			}
@@ -46,6 +55,7 @@ public class BookingManagement implements OPInterface {
 
 	public boolean read() {
 		Path path = Paths.get("Reservation.txt");
+		//ParsePosition pos = new ParsePosition(0);
 		try (BufferedReader br = Files.newBufferedReader(path)) {
 			String line = br.readLine();
 
@@ -54,7 +64,7 @@ public class BookingManagement implements OPInterface {
 				Date date;
 				DateFormat df1 = new SimpleDateFormat("dd/MM/yyyy");
 				try {
-					date = df1.parse(tokens[3]);
+					date = df1.parse(tokens[5]);
 				} catch (ParseException e) {
 					date = new Date();
 				}
@@ -78,7 +88,7 @@ public class BookingManagement implements OPInterface {
 			System.out.println("(1) - Add a reservation");
 			System.out.println("(2) - Display all reservations");
 			System.out.println("(3) - Edit a reservation");
-			System.out.println("(4) - Display single reservations");
+			System.out.println("(4) - Choose a single reservation to view");
 			System.out.println("(5) - Remove a reservation");
 			System.out.println("(6) - Quit");
 			user_choice = sc.nextInt();
@@ -106,7 +116,7 @@ public class BookingManagement implements OPInterface {
 
 				case 3:
 					// Edit an order
-					System.out.println("Please enter the ID of the reservation you would like to modify:");
+					System.out.println("From number 0 to "+(this.ReservationList.size()-1)+", please enter the ID of the reservation you would like to modify:");
 					reservation_no = sc.nextInt();
 					if (invalid(reservation_no)) {
 						System.out.println("Invalid ID. Please try again.");
@@ -171,6 +181,8 @@ public class BookingManagement implements OPInterface {
 		Date date;
 		DateFormat df1 = new SimpleDateFormat("dd/MM/yyyy");
 
+		//available tables
+
 		System.out.println("Please enter the number of pax");
 		int nrPax = sc.nextInt();
 
@@ -198,9 +210,15 @@ public class BookingManagement implements OPInterface {
 
 		System.out.println("Please enter the reservation time:");
 		int hour = sc.nextInt();
-		this.ReservationList.add(new Reservation(this.ReservationList.size() + 1, name, contact, nrPax, tableID, date, hour));
-
-
+		this.ReservationList.add(new Reservation(this.ReservationList.size(), name, contact, nrPax, tableID, date, hour));
+		
+		//update the corresponding Table object
+		String slot = strDateTime(hour, date);
+		for(int i=0;i<10;i++){
+			if (i==tableID){
+				TableList.get(i).getSlots().add(slot);
+			}
+		}
 		//create object
 		write();
 		writeTable();
@@ -228,32 +246,32 @@ public class BookingManagement implements OPInterface {
 		boolean updated = false;
 		Reservation reservation = ReservationList.get(id);
 		System.out.println("What would you like to edit:");
-		System.out.println("(1) - Number of Pax");
-		System.out.println("(2) - Table ID");
-		System.out.println("(3) - Name");
-		System.out.println("(4) - Contact Number");
-		System.out.println("(5) - Quit");
+		//System.out.println("(1) - Number of Pax");
+		//System.out.println("(2) - Table ID");
+		System.out.println("(1) - Name");
+		System.out.println("(2) - Contact Number");
+		System.out.println("(3) - Quit");
 
 		int user_choice = sc.nextInt();
 
 		switch (user_choice) {
-			case 1:
+			/*case 1:
 				System.out.println("Updated number of pax: ");
 				int nrPax = sc.nextInt();
 				reservation.setNrPax(nrPax);
 				ReservationList.set(id, reservation);
 				updated = true;
-				break;
+				break;*/
 
-			case 2:
+			/*case 2:
 				System.out.println("Change to Table ID: ");
 				int TableID = sc.nextInt();
 				reservation.setTableID(TableID);
 				ReservationList.set(id, reservation);
 				updated = true;
-				break;
+				break;*/
 
-			case 3:
+			case 1:
 				System.out.println("Please enter the new customer name: ");
 				sc.nextLine();
 				String name = sc.nextLine();
@@ -262,7 +280,7 @@ public class BookingManagement implements OPInterface {
 				updated = true;
 				break;
 
-			case 4:
+			case 2:
 				System.out.println("Please enter the new contact number: ");
 				sc.nextLine();
 				String contactnr = sc.nextLine();
@@ -271,7 +289,7 @@ public class BookingManagement implements OPInterface {
 				updated = true;
 				break;
 
-			case 5:
+			case 3:
 
 				break;
 
@@ -298,7 +316,7 @@ public class BookingManagement implements OPInterface {
 
 	public int removeExpiredReservation() {
 		int removed = 0;
-		Date date = new Date();
+		Date date = new Date();//current date
 
 		for (Reservation item : ReservationList) {
 			int before = item.getDate().compareTo(date);
@@ -318,21 +336,45 @@ public class BookingManagement implements OPInterface {
 
 		return removed;
 	}
+	
 
 	public ArrayList<Table> getAvailableTables() {
 		int nrOfAvailableTables = 0;
 		ArrayList<Table> availableTables = new ArrayList<>();
+
+		Date date;
+		DateFormat df1 = new SimpleDateFormat("dd/MM/yyyy");
+
+		System.out.println("Please enter the date you would like to check:");
+		String inputdate = sc.nextLine();
+		try {
+			date = df1.parse(inputdate);
+		} catch (ParseException e) {
+			date = new Date();
+		}
+
+		System.out.println("Please enter the time you would like to check(0-23):");
+		int hour = sc.nextInt();
+		
+		String checkSlot = strDateTime(hour, date);
+		for (Table i: TableList){
+			if(!i.getSlots().contains(checkSlot)){
+				availableTables.add(i);
+				//printing available tables
+				nrOfAvailableTables++;
+			}
+		}	
 		//System.out.println("\n" + new String(new char[87]).replace("\0", "-"));
 		//System.out.print(String.format("%6s %18s %21s %32s %6s", "|     ", "Table ID", "|    ", "Capacity of Tables available", "   |"));
 		//System.out.println("\n" + new String(new char[87]).replace("\0", "-"));
-		for (Table i : TableList) {
-			if (i.getAvailability()) {
-				availableTables.add(i);
+		//for (Table i : TableList) {
+		//	if (i.getAvailability()) {
+				//availableTables.add(i);
 				//System.out.print(String.format("%6s %18s %21s %32s %6s", "|     ", i.getTableID(), "|    ", i.getCapacity(), "|"));
 				//System.out.println("\n" + new String(new char[87]).replace("\0", "-"));
-				nrOfAvailableTables++;
-			}
-		}
+				
+			//}
+		//}
 		if (nrOfAvailableTables == 0) {
 			System.out.println("There are no tables available now.");
 			//System.out.print(String.format("%20s %35s %30s", "|                   ", " There are no tables available now.", "                        |"));
@@ -364,6 +406,7 @@ public class BookingManagement implements OPInterface {
 	public void write() throws IOException {
 		Path path = Paths.get("Reservation.txt");
 		FileWriter fw = new FileWriter(String.valueOf(path));
+		SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
 
 		for (Reservation reservation : this.ReservationList) {
 			try {
@@ -372,7 +415,8 @@ public class BookingManagement implements OPInterface {
 				fw.write(reservation.getContact() + ",");
 				fw.write(reservation.getNrPax() + ",");
 				fw.write(reservation.getTableID() + ",");
-				fw.write(reservation.getDate() + ",");
+				fw.write(format1.format(reservation.getDate())+",");
+				
 				fw.write(reservation.getStartTime() + "");
 				fw.write(System.lineSeparator());
 			} catch (IOException e) {
@@ -389,13 +433,18 @@ public class BookingManagement implements OPInterface {
 	public void writeTable() throws IOException {
 		Path path = Paths.get("Table.txt");
 		FileWriter fw = new FileWriter(String.valueOf(path));
-
+		
 		for (Table table : TableList) {
 			try {
 				fw.write(table.getTableID() + ",");
 				fw.write(table.getCapacity() + ",");
 				fw.write(table.getOccupied() + ",");
 				fw.write(table.getAvailability() + ",");
+				for(String item: table.getSlots()){
+					fw.write(item + ",");
+				}
+				
+			   
 				fw.write(System.lineSeparator());
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -408,12 +457,20 @@ public class BookingManagement implements OPInterface {
 		}
 	}
 
-	public boolean invalid(int order_no) {
-		if (order_no >= ReservationList.size() || order_no < 0) {
+	public boolean invalid(int reservation_no) {
+		if (reservation_no >= ReservationList.size() || reservation_no < 0) {
 			return true;
 		}
-
 		return false;
+	}
+
+	public String strDateTime(int timeslot,Date date){
+		
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");  
+		String strDate = dateFormat.format(date);  
+		String dateTime = strDate + timeslot;
+
+		return dateTime;
 	}
 
 }
