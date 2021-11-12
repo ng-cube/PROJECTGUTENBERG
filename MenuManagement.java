@@ -80,6 +80,7 @@ public class MenuManagement implements OPInterface {
 			MenuItem.list_enum_types();
 			int enum_int = sc.nextInt();
 			System.out.println("Description of Menu Item you would like to add: ");
+			sc.nextLine();
 			String description = sc.nextLine();
 
 			for(int i=0; i<Menu.size(); i++){
